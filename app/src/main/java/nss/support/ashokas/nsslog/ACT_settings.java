@@ -159,5 +159,11 @@ public class ACT_settings extends AppCompatActivity implements View.OnClickListe
         overridePendingTransition(0, 0);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent=new Intent(this,ACT_home.class);
+        startActivity(intent);
+        this.finish();
+    }
 }
