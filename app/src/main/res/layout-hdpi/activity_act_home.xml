@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+android:background="#ffffff"
+    tools:context="nss.support.ashokas.nsslog.ACT_home"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/ic_bg_corner_main">
+        <TextView
+            android:layout_gravity="right"
+            android:id="@+id/txt_menu"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/ic_menu_black_24dp"
+            android:elevation="10dp" />
+
+
+        <TextView
+            android:id="@+id/xml_netwrkIndcate"
+            android:drawablePadding="5dp"
+            android:drawableLeft="@drawable/ic_wifi_black_24dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+           android:textSize="15dp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No network"/>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_team_svg">
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/xml_txt_isconn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayout3"
+            android:layout_marginTop="10dp"
+            android:text=""
+            android:textColor="@android:color/black"
+            android:textSize="20dp" />
+
+        <Button
+            android:layout_marginTop="15dp"
+            android:id="@+id/xml_service_id"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:background="@drawable/bgdesn_buton_curved"
+            android:drawableRight="@drawable/ic_arrow_forward_black_24dp"
+            android:elevation="10dp"
+            android:text="Start  Service" />
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/xml_fltbt_mnlcall"
+        android:layout_width="wrap_content"
+        android:padding="20dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="130dp"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/ic_edit_black_24dp"
+        app:backgroundTint="#d8e1dede"
+        app:elevation="10dp"/>
+
+
+</RelativeLayout>
+

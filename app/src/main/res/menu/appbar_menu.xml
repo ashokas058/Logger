@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<item android:title="All Calls"
+    android:id="@+id/xml_menu_allcalls"></item>
+
+    <item android:title="Received"
+        android:id="@+id/xml_menu_recv"></item>
+    <item android:title="Missed"
+        android:id="@+id/xml_menu_mssd"></item>
+
+    <item android:title="update"
+        app:showAsAction="ifRoom"
+        android:id="@+id/xml_menu_save"></item>
+
+</menu>
