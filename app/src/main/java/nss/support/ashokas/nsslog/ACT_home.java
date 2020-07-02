@@ -265,7 +265,7 @@ private  class  ServiceTimeUiThread extends  Thread{
     @Override
     public void run() {
         super.run();
-        while (isInActivity){
+        while (isInActivity&&ISRUNNING){
             String runTime= String.valueOf(getServiceTime());
             runOnUiThread(new Runnable() {
                 @Override
@@ -294,6 +294,7 @@ public  class  ServiceStateRCVR extends  BroadcastReceiver{
         if(stat) {
             Toast.makeText(context, "Service running", Toast.LENGTH_SHORT).show();
             try{
+                srvcThread=new ServiceTimeUiThread();
                 srvcThread.start();
             }
             catch (Exception e){}
@@ -302,9 +303,6 @@ public  class  ServiceStateRCVR extends  BroadcastReceiver{
 
         else {
             Toast.makeText(context, "Service Stopped", Toast.LENGTH_SHORT).show();
-            try {
-                srvcThread.interrupt();
-            }catch (Exception e){}
         }
 
     }
