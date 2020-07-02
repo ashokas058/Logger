@@ -43,6 +43,7 @@ import static nss.support.ashokas.nsslog.ForgroundService.CLS_globalProvider.pos
 import static nss.support.ashokas.nsslog.ForgroundService.CLS_globalProvider.postDataServer;
 import static nss.support.ashokas.nsslog.ForgroundService.CLS_globalProvider.scheduledExec;
 import static nss.support.ashokas.nsslog.ForgroundService.CLS_globalProvider.setcacheDb;
+import static nss.support.ashokas.nsslog.ForgroundService.CLS_globalProvider.SERVICE_START_TIME;
 
 /**
  * Created by DARK-DEVIL on 5/2/2020.
@@ -71,7 +72,11 @@ public class CLS_callLogService extends Service {
         super.onCreate();
         //isRunning=true;
         ISRUNNING=true;
+        try{SERVICE_START_TIME=System.currentTimeMillis();}
+        catch (Exception e){}
+
         binder=new localServicePvdr();
+        sendNtwrkbrdCast(true);
 
     }
     @Override
@@ -227,10 +232,10 @@ public class CLS_callLogService extends Service {
            }
        }
    }
-   private  void  sendNtwrkbrdCast(String state){
+   private  void  sendNtwrkbrdCast(boolean state){
         Intent intent=new Intent();
         intent.setAction(BRD_ACTIVITY_Action);
-        intent.putExtra("networkState",state);
+        intent.putExtra("state",state);
         sendBroadcast(intent);
    }
    public   boolean isNetwrkConnected(){
@@ -244,6 +249,7 @@ public class CLS_callLogService extends Service {
         super.onDestroy();
         //isRunning=false;
         ISRUNNING=false;
+        sendNtwrkbrdCast(false);
         //scheduledExec.shutdown();
 
         //insertDBServiceStat("false");

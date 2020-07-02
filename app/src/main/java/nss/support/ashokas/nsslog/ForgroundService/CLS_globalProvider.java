@@ -1,8 +1,6 @@
 package nss.support.ashokas.nsslog.ForgroundService;
 
-import android.app.AlertDialog;
 import android.app.Application;
-import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ContentValues;
@@ -10,7 +8,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.icu.util.TimeUnit;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
@@ -27,7 +24,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import nss.support.ashokas.nsslog.Networking.RequestNetwork;
@@ -47,6 +43,7 @@ public class CLS_globalProvider extends Application {
     SharedPreferences preferences;
     static Cursor cursorApi;
     public  static boolean ISRUNNING=false;
+    public static long SERVICE_START_TIME =0;
     public  static  String LOGSUC="sucess";
     public  static  String LOGCACHE="cached";
     public  static  String LOGNTWRKF="network error/qued";
@@ -291,6 +288,17 @@ public class CLS_globalProvider extends Application {
         }
 
 
+    }
+
+    public  static  long getServiceTime(){
+        long serviceTime = 0;
+        try {
+            serviceTime=System.currentTimeMillis()- SERVICE_START_TIME;
+        }
+        catch (Exception e){}
+        finally {
+return  serviceTime;
+        }
     }
 
 }

@@ -19,23 +19,28 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import nss.support.ashokas.nsslog.ForgroundService.CLS_callLogService;
 
 import static java.lang.Thread.sleep;
 import static nss.support.ashokas.nsslog.ForgroundService.CLS_globalProvider.BRD_ACTIVITY_Action;
 import static nss.support.ashokas.nsslog.ForgroundService.CLS_globalProvider.ISRUNNING;
+import static nss.support.ashokas.nsslog.ForgroundService.CLS_globalProvider.createLogdataExtnl;
+import static nss.support.ashokas.nsslog.ForgroundService.CLS_globalProvider.getServiceTime;
+import static nss.support.ashokas.nsslog.ForgroundService.CLS_globalProvider.isRestapiConfigSet;
 import static nss.support.ashokas.nsslog.ForgroundService.CLS_globalProvider.isRestapiConfigSet;
 
 public class ACT_home extends AppCompatActivity implements View.OnClickListener {
 Button svcStartBt;
-TextView txtVw_Isconn,txtMenu,txtNtwrkIndc;
+TextView txtVw_Isconn,txtMenu,txtNtwrkIndc,txtServiceTime;
 FloatingActionButton fltbt_callMnl;
 boolean isInActivity;
-CLS_callLogService callServiceOb;
 boolean isrunning;
 IntentFilter intentHomeFilter;
-serviceRcvr mServiceOb;
+NetworkUiThread nwrkThread;
+ServiceTimeUiThread srvcThread;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +53,30 @@ serviceRcvr mServiceOb;
         registerViewListener();
         updateUi();
         initBrodcastRcvr();
-        networkUiThread thread=new networkUiThread();
-        thread.start();
+        initNetworkThread();
+        initServiceUiThread();
 
 
     }
 
+    private void initServiceUiThread() {
+        if(srvcThread==null)
+            srvcThread=new ServiceTimeUiThread();
+    }
 
+    private void initNetworkThread() {
+        try{
+            if(nwrkThread==null) {
+                nwrkThread = new NetworkUiThread();
+                nwrkThread.start();
+            }
+            else {
+                if(!nwrkThread.isAlive())
+                    nwrkThread.start();
+            }
+        }catch (Exception e){}
+
+    }
 
     private void updateUi() {
         if (ISRUNNING){
@@ -132,24 +154,7 @@ serviceRcvr mServiceOb;
 
     private boolean  getServiceState(){
         return  ISRUNNING;
-        //Cursor cursor=db.rawQuery("SELECT * FROM SERVICE",null);
-        //cursor.moveToNext();
-        //String  val=cursor.getString(cursor.getColumnIndex("STATE"));
-        //return  Boolean.valueOf(val);
-
     }
-   /*
-
-    private  void  updateUi(){
-        if(getServiceState()){
-        txtVw_Isconn.setText("Service Running");
-        svcStartBt.setText("stop service");
-    }
-    else{
-        txtVw_Isconn.setText("");
-        svcStartBt.setText("start service");
-
-    }}*/
 
  private  void initComponents(){
      svcStartBt=findViewById(R.id.xml_service_id);
@@ -157,6 +162,8 @@ serviceRcvr mServiceOb;
      txtVw_Isconn=findViewById(R.id.xml_txt_isconn);
      txtMenu=findViewById(R.id.txt_menu);
      txtNtwrkIndc=findViewById(R.id.xml_netwrkIndcate);
+     txtServiceTime=findViewById(R.id.xml_service_time_ui);
+     txtServiceTime.setText("");
      txtNtwrkIndc.setVisibility(View.INVISIBLE);
      requestPermission();
      isInActivity=true;
@@ -166,7 +173,6 @@ serviceRcvr mServiceOb;
      fltbt_callMnl.setOnClickListener(this);
      txtMenu.setOnClickListener(this);
  }
-
 /*
 private ServiceConnection  callServiceConn=new ServiceConnection() {
     @Override
@@ -215,13 +221,6 @@ bound=false;
     startActivity(intentSettingAct);
     this.finish();
     }
-    private void checkConfig(){
-
-    if (!isRestapiConfigSet())
-        startRestApiConfigAlert();
-    }
-
-
 
     public class serviceRcvr extends BroadcastReceiver{
         @Override
@@ -229,15 +228,8 @@ bound=false;
         }
     }
 
-    private  void  initBrodcastRcvr(){
-        intentHomeFilter=new IntentFilter();
-        intentHomeFilter.addAction(BRD_ACTIVITY_Action);
-        mServiceOb=new serviceRcvr();
-        registerReceiver(mServiceOb,intentHomeFilter);
-    }
 
-
-private  class networkUiThread extends Thread{
+private  class NetworkUiThread extends Thread{
 
     @Override
     public void run() {
@@ -268,4 +260,65 @@ private  class networkUiThread extends Thread{
         }
     }
 }
+private  class  ServiceTimeUiThread extends  Thread{
+
+    @Override
+    public void run() {
+        super.run();
+        while (isInActivity){
+            String runTime= String.valueOf(getServiceTime());
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    txtServiceTime.setText(runTime);
+                }
+            });
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+    }
+}
+
+public  class  ServiceStateRCVR extends  BroadcastReceiver{
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        //Toast.makeText(context, "From Service="+intent.getStringExtra("state"), Toast.LENGTH_SHORT).show();
+        boolean stat=intent.getBooleanExtra("state",false);
+        if(stat) {
+            Toast.makeText(context, "Service running", Toast.LENGTH_SHORT).show();
+            try{
+                srvcThread.start();
+            }
+            catch (Exception e){}
+
+        }
+
+        else {
+            Toast.makeText(context, "Service Stopped", Toast.LENGTH_SHORT).show();
+            try {
+                srvcThread.interrupt();
+            }catch (Exception e){}
+        }
+
+    }
+}
+
+    private  void  initBrodcastRcvr(){
+        try {
+            intentHomeFilter = new IntentFilter();
+            intentHomeFilter.addAction(BRD_ACTIVITY_Action);
+            registerReceiver(new ServiceStateRCVR(), intentHomeFilter);
+        }catch (Exception e){
+            createLogdataExtnl(e.getMessage());
+        }
+    }
+
+
 }
