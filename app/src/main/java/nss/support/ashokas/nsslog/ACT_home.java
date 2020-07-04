@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +41,8 @@ boolean isInActivity;
 boolean isrunning;
 IntentFilter intentHomeFilter;
 NetworkUiThread nwrkThread;
-ServiceTimeUiThread srvcThread;
+Chronometer chrMtrServiceTime;
+//ServiceTimeUiThread srvcThread;
 
 
     @Override
@@ -55,15 +57,15 @@ ServiceTimeUiThread srvcThread;
         updateUi();
         initBrodcastRcvr();
         initNetworkThread();
-        initServiceUiThread();
+        //initServiceUiThread();
 
 
     }
-
+/*
     private void initServiceUiThread() {
         if(srvcThread==null)
             srvcThread=new ServiceTimeUiThread();
-    }
+    } */
 
     private void initNetworkThread() {
         try{
@@ -81,11 +83,9 @@ ServiceTimeUiThread srvcThread;
 
     private void updateUi() {
         if (ISRUNNING){
-            txtVw_Isconn.setText("service running");
             svcStartBt.setText("stop service");
         }
         else{
-            txtVw_Isconn.setText("");
             svcStartBt.setText("start service");
         }
     }
@@ -102,13 +102,10 @@ ServiceTimeUiThread srvcThread;
                     else {
                         if (getServiceState()) {
                             this.stopService(intent);
-                            txtVw_Isconn.setText("");
-                            svcStartBt.setText("start service");
+
                         } else {
                             if (requestPermission()) {
                                 this.startForegroundService(intent);
-                                txtVw_Isconn.setText("service running");
-                                svcStartBt.setText("stop service");
                             }
                         }
                     }
@@ -161,13 +158,15 @@ ServiceTimeUiThread srvcThread;
      svcStartBt=findViewById(R.id.xml_service_id);
      fltbt_callMnl=findViewById(R.id.xml_fltbt_mnlcall);
      txtVw_Isconn=findViewById(R.id.xml_txt_isconn);
+     txtVw_Isconn.setVisibility(View.INVISIBLE);
      txtMenu=findViewById(R.id.txt_menu);
      txtNtwrkIndc=findViewById(R.id.xml_netwrkIndcate);
-     txtServiceTime=findViewById(R.id.xml_service_time_ui);
-     txtServiceTime.setText("");
      txtNtwrkIndc.setVisibility(View.INVISIBLE);
      requestPermission();
      isInActivity=true;
+     //txtServiceTime=findViewById(R.id.xml_service_time_ui);
+     //txtServiceTime.setText("");
+     chrMtrServiceTime=findViewById(R.id.xml_chrono_svc_time);
  }
  private  void  registerViewListener(){
      svcStartBt.setOnClickListener(this);
@@ -222,14 +221,6 @@ bound=false;
     startActivity(intentSettingAct);
     this.finish();
     }
-
-    public class serviceRcvr extends BroadcastReceiver{
-        @Override
-        public void onReceive(Context context, Intent intent) {
-        }
-    }
-
-
 private  class NetworkUiThread extends Thread{
 
     @Override
@@ -261,6 +252,7 @@ private  class NetworkUiThread extends Thread{
         }
     }
 }
+/*
 private  class  ServiceTimeUiThread extends  Thread{
 
     @Override
@@ -285,6 +277,7 @@ private  class  ServiceTimeUiThread extends  Thread{
 
     }
 }
+*/
 
 public  class  ServiceStateRCVR extends  BroadcastReceiver{
 
@@ -295,8 +288,8 @@ public  class  ServiceStateRCVR extends  BroadcastReceiver{
         if(stat) {
             Toast.makeText(context, "Service running", Toast.LENGTH_SHORT).show();
             try{
-                srvcThread=new ServiceTimeUiThread();
-                srvcThread.start();
+                svcStartBt.setText("stop service");
+                initChronometer();
             }
             catch (Exception e){}
 
@@ -304,6 +297,8 @@ public  class  ServiceStateRCVR extends  BroadcastReceiver{
 
         else {
             Toast.makeText(context, "Service Stopped", Toast.LENGTH_SHORT).show();
+            svcStartBt.setText("start service");
+            stopChrometer();
         }
 
     }
@@ -318,6 +313,12 @@ public  class  ServiceStateRCVR extends  BroadcastReceiver{
             createLogdataExtnl(e.getMessage());
         }
     }
-
+private  void  initChronometer(){
+        chrMtrServiceTime.setFormat("started- %s");
+        chrMtrServiceTime.start();
+}
+private  void stopChrometer(){
+    chrMtrServiceTime.stop();
+}
 
 }
