@@ -89,10 +89,9 @@ android:background="#ffffff"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:text="00:00:00"
         android:layout_margin="20dp"
         android:padding="20dp"
-        android:textSize="15dp"/>
+        android:textSize="12dp"/>
 
 
 </RelativeLayout>

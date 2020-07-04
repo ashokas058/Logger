@@ -81,11 +81,11 @@ ServiceTimeUiThread srvcThread;
 
     private void updateUi() {
         if (ISRUNNING){
-            //txtVw_Isconn.setText("service running");
+            txtVw_Isconn.setText("service running");
             svcStartBt.setText("stop service");
         }
         else{
-            //txtVw_Isconn.setText("");
+            txtVw_Isconn.setText("");
             svcStartBt.setText("start service");
         }
     }
@@ -102,13 +102,13 @@ ServiceTimeUiThread srvcThread;
                     else {
                         if (getServiceState()) {
                             this.stopService(intent);
-                            //txtVw_Isconn.setText("");
-                            //svcStartBt.setText("start service");
+                            txtVw_Isconn.setText("");
+                            svcStartBt.setText("start service");
                         } else {
                             if (requestPermission()) {
                                 this.startForegroundService(intent);
-                                //txtVw_Isconn.setText("service running");
-                               // svcStartBt.setText("stop service");
+                                txtVw_Isconn.setText("service running");
+                                svcStartBt.setText("stop service");
                             }
                         }
                     }
@@ -167,7 +167,6 @@ ServiceTimeUiThread srvcThread;
      txtServiceTime.setText("");
      txtNtwrkIndc.setVisibility(View.INVISIBLE);
      requestPermission();
-     txtVw_Isconn.setVisibility(View.INVISIBLE);
      isInActivity=true;
  }
  private  void  registerViewListener(){
@@ -295,7 +294,6 @@ public  class  ServiceStateRCVR extends  BroadcastReceiver{
         boolean stat=intent.getBooleanExtra("state",false);
         if(stat) {
             Toast.makeText(context, "Service running", Toast.LENGTH_SHORT).show();
-            svcStartBt.setText("stop service");
             try{
                 srvcThread=new ServiceTimeUiThread();
                 srvcThread.start();
@@ -306,7 +304,6 @@ public  class  ServiceStateRCVR extends  BroadcastReceiver{
 
         else {
             Toast.makeText(context, "Service Stopped", Toast.LENGTH_SHORT).show();
-            svcStartBt.setText("start service");
         }
 
     }
