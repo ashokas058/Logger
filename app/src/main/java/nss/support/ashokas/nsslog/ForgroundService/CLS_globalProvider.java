@@ -300,5 +300,9 @@ public class CLS_globalProvider extends Application {
 return  serviceTime;
         }
     }
+    public static String getTimeAsString(long time){
+        SimpleDateFormat formator=new SimpleDateFormat("hh:mm:ss");
+        return  formator.format(new Date(time));
+    }
 
 }

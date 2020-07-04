@@ -28,6 +28,7 @@ import static nss.support.ashokas.nsslog.ForgroundService.CLS_globalProvider.BRD
 import static nss.support.ashokas.nsslog.ForgroundService.CLS_globalProvider.ISRUNNING;
 import static nss.support.ashokas.nsslog.ForgroundService.CLS_globalProvider.createLogdataExtnl;
 import static nss.support.ashokas.nsslog.ForgroundService.CLS_globalProvider.getServiceTime;
+import static nss.support.ashokas.nsslog.ForgroundService.CLS_globalProvider.getTimeAsString;
 import static nss.support.ashokas.nsslog.ForgroundService.CLS_globalProvider.isRestapiConfigSet;
 import static nss.support.ashokas.nsslog.ForgroundService.CLS_globalProvider.isRestapiConfigSet;
 
@@ -266,7 +267,7 @@ private  class  ServiceTimeUiThread extends  Thread{
     public void run() {
         super.run();
         while (isInActivity&&ISRUNNING){
-            String runTime= String.valueOf(getServiceTime());
+            String runTime= getTimeAsString(getServiceTime());
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
