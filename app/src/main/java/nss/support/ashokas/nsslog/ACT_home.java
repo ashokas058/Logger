@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -314,10 +315,12 @@ public  class  ServiceStateRCVR extends  BroadcastReceiver{
         }
     }
 private  void  initChronometer(){
+        chrMtrServiceTime.setBase(SystemClock.elapsedRealtime());
         chrMtrServiceTime.setFormat("started- %s");
         chrMtrServiceTime.start();
 }
 private  void stopChrometer(){
+    chrMtrServiceTime.setText("");
     chrMtrServiceTime.stop();
 }
 
