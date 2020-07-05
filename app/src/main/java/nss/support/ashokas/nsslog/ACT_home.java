@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -43,8 +44,6 @@ boolean isrunning;
 IntentFilter intentHomeFilter;
 NetworkUiThread nwrkThread;
 ServiceTimeUiThread srvcThread;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +59,6 @@ ServiceTimeUiThread srvcThread;
         initServiceUiThread();
         initViewVisibility();
         initVarValues();
-
-
     }
 
     private void initServiceUiThread() {
@@ -273,6 +270,7 @@ private  class  ServiceTimeUiThread extends  Thread{
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    txtServiceTime.setTextColor(Color.DKGRAY);
                     txtServiceTime.setText(runTime);
                 }
             });
@@ -296,9 +294,6 @@ public  class  ServiceStateRCVR extends  BroadcastReceiver{
             try{
                 svcStartBt.setText("stop service");
                 initServiceUiThread();
-
-
-
             }
             catch (Exception e){}
 
@@ -309,7 +304,8 @@ public  class  ServiceStateRCVR extends  BroadcastReceiver{
             svcStartBt.setText("start service");
             String srvcStopped=txtServiceTime.getText().toString();
             createLogdataExtnl("Service stoped -"+srvcStopped);
-            txtServiceTime.setText("");
+            txtServiceTime.setTextColor(Color.RED);
+            txtServiceTime.setText("Dir@.LoggerData");
         }
 
     }

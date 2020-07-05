@@ -253,7 +253,7 @@ public class CLS_globalProvider extends Application {
             writer.close();
 
         }catch(Exception e){
-            createLogdataExtnl(e.getMessage()+"-"+getSysTime());
+            Log.d("ExternelWrite",e.getMessage()); //lol
         }
 
     }
