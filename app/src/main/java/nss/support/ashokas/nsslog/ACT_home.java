@@ -42,8 +42,7 @@ boolean isInActivity;
 boolean isrunning;
 IntentFilter intentHomeFilter;
 NetworkUiThread nwrkThread;
-Chronometer chrMtrServiceTime;
-//ServiceTimeUiThread srvcThread;
+ServiceTimeUiThread srvcThread;
 
 
     @Override
@@ -58,25 +57,30 @@ Chronometer chrMtrServiceTime;
         updateUi();
         initBrodcastRcvr();
         initNetworkThread();
-        //initServiceUiThread();
+        initServiceUiThread();
+        initViewVisibility();
+        initVarValues();
 
 
     }
-/*
+
     private void initServiceUiThread() {
-        if(srvcThread==null)
-            srvcThread=new ServiceTimeUiThread();
-    } */
+        try{
+            if(ISRUNNING){
+                if(srvcThread==null||!srvcThread.isAlive()){
+                    srvcThread=new ServiceTimeUiThread();
+                    srvcThread.start();
+                }
+            }
+        }
+        catch (Exception e){}
+    }
 
     private void initNetworkThread() {
         try{
-            if(nwrkThread==null) {
+            if(nwrkThread==null||!nwrkThread.isAlive()) {
                 nwrkThread = new NetworkUiThread();
                 nwrkThread.start();
-            }
-            else {
-                if(!nwrkThread.isAlive())
-                    nwrkThread.start();
             }
         }catch (Exception e){}
 
@@ -159,15 +163,20 @@ Chronometer chrMtrServiceTime;
      svcStartBt=findViewById(R.id.xml_service_id);
      fltbt_callMnl=findViewById(R.id.xml_fltbt_mnlcall);
      txtVw_Isconn=findViewById(R.id.xml_txt_isconn);
-     txtVw_Isconn.setVisibility(View.INVISIBLE);
      txtMenu=findViewById(R.id.txt_menu);
      txtNtwrkIndc=findViewById(R.id.xml_netwrkIndcate);
-     txtNtwrkIndc.setVisibility(View.INVISIBLE);
+     txtServiceTime=findViewById(R.id.xml_service_time_ui);
      requestPermission();
+
+ }
+ private  void  initViewVisibility(){
+     txtVw_Isconn.setVisibility(View.INVISIBLE);
+     txtNtwrkIndc.setVisibility(View.INVISIBLE);
+
+ }
+ private  void initVarValues(){
      isInActivity=true;
-     //txtServiceTime=findViewById(R.id.xml_service_time_ui);
-     //txtServiceTime.setText("");
-     chrMtrServiceTime=findViewById(R.id.xml_chrono_svc_time);
+     txtServiceTime.setText("");
  }
  private  void  registerViewListener(){
      svcStartBt.setOnClickListener(this);
@@ -253,7 +262,7 @@ private  class NetworkUiThread extends Thread{
         }
     }
 }
-/*
+
 private  class  ServiceTimeUiThread extends  Thread{
 
     @Override
@@ -273,24 +282,23 @@ private  class  ServiceTimeUiThread extends  Thread{
                 e.printStackTrace();
             }
         }
-
-
-
     }
 }
-*/
+
 
 public  class  ServiceStateRCVR extends  BroadcastReceiver{
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        //Toast.makeText(context, "From Service="+intent.getStringExtra("state"), Toast.LENGTH_SHORT).show();
         boolean stat=intent.getBooleanExtra("state",false);
         if(stat) {
             Toast.makeText(context, "Service running", Toast.LENGTH_SHORT).show();
             try{
                 svcStartBt.setText("stop service");
-                initChronometer();
+                initServiceUiThread();
+
+
+
             }
             catch (Exception e){}
 
@@ -299,7 +307,9 @@ public  class  ServiceStateRCVR extends  BroadcastReceiver{
         else {
             Toast.makeText(context, "Service Stopped", Toast.LENGTH_SHORT).show();
             svcStartBt.setText("start service");
-            stopChrometer();
+            String srvcStopped=txtServiceTime.getText().toString();
+            createLogdataExtnl("Service stoped -"+srvcStopped);
+            txtServiceTime.setText("");
         }
 
     }
@@ -314,14 +324,5 @@ public  class  ServiceStateRCVR extends  BroadcastReceiver{
             createLogdataExtnl(e.getMessage());
         }
     }
-private  void  initChronometer(){
-        chrMtrServiceTime.setBase(SystemClock.elapsedRealtime());
-        chrMtrServiceTime.setFormat("started- %s");
-        chrMtrServiceTime.start();
-}
-private  void stopChrometer(){
-    chrMtrServiceTime.setText("");
-    chrMtrServiceTime.stop();
-}
 
 }

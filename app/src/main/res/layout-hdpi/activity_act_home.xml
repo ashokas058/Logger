@@ -83,7 +83,7 @@ android:background="#ffffff"
         app:backgroundTint="#d8e1dede"
         app:elevation="10dp"/>
 
-    <!--
+
     <TextView
         android:elevation="10dp"
         android:id="@+id/xml_service_time_ui"
@@ -95,17 +95,8 @@ android:background="#ffffff"
         android:padding="20dp"
         android:textSize="12dp"/>
 
-        -->
-    <Chronometer
-        android:id="@+id/xml_chrono_svc_time"
-        android:elevation="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="20dp"
-        android:padding="20dp"
-        android:textSize="15dp" />
+
+
 
 
 </RelativeLayout>

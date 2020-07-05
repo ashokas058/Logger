@@ -17,6 +17,8 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.BlockingQueue;
@@ -43,7 +45,7 @@ public class CLS_globalProvider extends Application {
     SharedPreferences preferences;
     static Cursor cursorApi;
     public  static boolean ISRUNNING=false;
-    public static long SERVICE_START_TIME =0;
+    public static Instant SERVICE_START_TIME;
     public  static  String LOGSUC="sucess";
     public  static  String LOGCACHE="cached";
     public  static  String LOGNTWRKF="network error/qued";
@@ -293,16 +295,27 @@ public class CLS_globalProvider extends Application {
     public  static  long getServiceTime(){
         long serviceTime = 0;
         try {
-            serviceTime=System.currentTimeMillis()- SERVICE_START_TIME;
+            Instant currentInstant=Instant.now();
+            Duration duration=Duration.between(SERVICE_START_TIME,currentInstant);
+            serviceTime=duration.toMillis();
         }
         catch (Exception e){}
         finally {
 return  serviceTime;
         }
     }
-    public static String getTimeAsString(long time){
-        SimpleDateFormat formator=new SimpleDateFormat("hh:mm:ss");
-        return  formator.format(new Date(time));
+    public static String getTimeAsString(long difference){
+
+        long differenceSeconds = difference / 1000 % 60;
+        long differenceMinutes = difference / (60 * 1000) % 60;
+        long differenceHours = difference / (60 * 60 * 1000) % 24;
+        long differenceDays = difference / (24 * 60 * 60 * 1000);
+
+        String hr=differenceHours<10?"0"+String.valueOf(differenceHours):String.valueOf(differenceHours);
+        String mint=differenceMinutes<10?"0"+String.valueOf(differenceMinutes):String.valueOf(differenceMinutes);
+        String sec=differenceSeconds<10?"0"+String.valueOf(differenceSeconds):String.valueOf(differenceSeconds);
+        String day=differenceDays<10?"0"+String.valueOf(differenceDays):String.valueOf(differenceDays);
+        return day+":"+hr+":"+mint+":"+sec;
     }
 
 }

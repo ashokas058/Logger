@@ -20,6 +20,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -72,7 +73,7 @@ public class CLS_callLogService extends Service {
         super.onCreate();
         //isRunning=true;
         ISRUNNING=true;
-        try{SERVICE_START_TIME=System.currentTimeMillis();}
+        try{SERVICE_START_TIME= Instant.now();}
         catch (Exception e){}
 
         binder=new localServicePvdr();
