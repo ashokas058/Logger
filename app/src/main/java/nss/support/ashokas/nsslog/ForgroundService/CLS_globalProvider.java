@@ -248,7 +248,7 @@ public class CLS_globalProvider extends Application {
             FileOutputStream fileOut=new FileOutputStream(dataFile,true);
             OutputStreamWriter writer=new OutputStreamWriter(fileOut);
             writer.write(log);
-            writer.write("\r\n");
+            writer.write("\r\n--------------------------");
             writer.flush();
             writer.close();
 

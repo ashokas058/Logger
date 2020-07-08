@@ -232,6 +232,7 @@ private  class NetworkUiThread extends Thread{
 
     @Override
     public void run() {
+        Log.d("networkThread","started="+Thread.currentThread().getName());
         while (isInActivity) {
             super.run();
             try {
@@ -257,6 +258,7 @@ private  class NetworkUiThread extends Thread{
                 });
             }
         }
+        Log.d("networkThread","stoped="+Thread.currentThread().getName());
     }
 }
 
@@ -265,6 +267,7 @@ private  class  ServiceTimeUiThread extends  Thread{
     @Override
     public void run() {
         super.run();
+        Log.d("serviceThread","started="+Thread.currentThread().getName());
         while (isInActivity&&ISRUNNING){
             String runTime= getTimeAsString(getServiceTime());
             runOnUiThread(new Runnable() {
@@ -280,6 +283,7 @@ private  class  ServiceTimeUiThread extends  Thread{
                 e.printStackTrace();
             }
         }
+        Log.d("serviceThread","stoped="+Thread.currentThread().getName());
     }
 }
 
