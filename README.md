@@ -1,12 +1,12 @@
-**Logger** App -Onclient Request 
-Platform-Android 
-compileSdkVersion- 28 
+**Logger** App -Onclient Request\ 
+Platform-Android\
+compileSdkVersion- 28\
 
-Tested-Redmi note 8
+Tested-Redmi note 8\
 
-The project builds on the purpose of collecting receiving **MissedCalls** to a Remote DataBase.
+The project builds on the purpose of collecting receiving **MissedCalls** to a Remote DataBase\
 
-It having Foreground Service which will be manually activated/Deactivated depends on needs.
+It having Foreground Service which will be manually activated/Deactivated depends on needs\
 
 <p align="center">
 <img src="https://github.com/ashokas058/Logger/blob/master/Screenshots/Loger_home.png"
