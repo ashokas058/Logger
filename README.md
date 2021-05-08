@@ -14,17 +14,17 @@ The project builds on the purpose of collecting receiving **MissedCalls** to a R
 It having Foreground Service which will be manually activated/Deactivated depends on needs <br />
 
 <p align="center">
-<img src="https://github.com/ashokas058/Logger/blob/master/Screenshots/Loger_home.png"
+<img  width="360" src="https://github.com/ashokas058/Logger/blob/master/Screenshots/Loger_home.png"
   alt="Home UI">
 </p>
 
 <p align="center">
-<img src="https://github.com/ashokas058/Logger/blob/master/Screenshots/Logger_setting.png"
+<img width="360" src="https://github.com/ashokas058/Logger/blob/master/Screenshots/Logger_setting.png"
   alt="Home UI">
 </p>
 
 
 <p align="center">
-<img src="https://github.com/ashokas058/Logger/blob/master/Screenshots/Logger_manual_call_log.png"
+<img  width="360" src="https://github.com/ashokas058/Logger/blob/master/Screenshots/Logger_manual_call_log.png"
   alt="Home UI">
 </p>
