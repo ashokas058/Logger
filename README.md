@@ -2,7 +2,7 @@
 <img src="https://github.com/ashokas058/Logger/blob/master/Screenshots/Nss%20Logger_%20web.jpg"
   alt="Home UI">
 </p>
-
+ <hr/>
 **Logger** App -Onclient Request <br /> 
 Platform-Android <br />
 compileSdkVersion- 28 <br />
